@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#183247"><title>PII Guard · 개인정보 비식별화</title>
+<style>
+:root{--ink:#183247;--teal:#176b67;--bg:#f4f6f5;--surface:#fff;--muted:#71808a;--line:#e2e8e6;--warn:#a66a19;--danger:#b44747;--soft:#e6f1ef;--shadow:0 12px 34px rgba(24,50,71,.08)}
+*{box-sizing:border-box}html{background:#e8edeb}body{margin:0;font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.app{max-width:480px;min-height:100vh;margin:0 auto;background:var(--bg);position:relative;padding-bottom:calc(86px + env(safe-area-inset-bottom));box-shadow:0 0 60px rgba(24,50,71,.10)}
+.top{padding:18px 22px 14px;background:var(--surface);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.4px}.brandmark{width:34px;height:34px;border-radius:12px;background:var(--ink);display:grid;place-items:center;color:white;font-size:17px}.top small{color:var(--muted);font-size:11px}
+main{padding:22px 20px 26px}.screen{display:none;animation:rise .22s ease}.screen.active{display:block}@keyframes rise{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.3px;color:var(--teal);text-transform:uppercase}.h1{font-size:27px;line-height:1.22;letter-spacing:-1px;margin:8px 0 9px;font-weight:800}.sub{font-size:13px;line-height:1.55;color:var(--muted);margin:0 0 20px}
+.hero{background:var(--ink);color:#fff;border-radius:22px;padding:22px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:170px;height:170px;border:1px solid rgba(255,255,255,.13);border-radius:50%;right:-65px;top:-68px;box-shadow:0 0 0 22px rgba(255,255,255,.035),0 0 0 46px rgba(255,255,255,.025)}
+.hero .eyebrow{color:#9bd1c8}.hero h2{font-size:22px;line-height:1.35;margin:10px 0 8px;max-width:260px}.hero p{font-size:12px;line-height:1.6;color:#d0dce2;max-width:270px;margin:0 0 18px}
+.btn{border:0;border-radius:14px;padding:14px 17px;font-size:14px;font-weight:750;min-height:48px;transition:.15s}.btn:active{transform:scale(.98)}.primary{background:var(--teal);color:white}.hero .primary{background:#d5eee8;color:var(--ink)}.secondary{background:white;border:1px solid var(--line);color:var(--ink)}.ghost{background:transparent;color:var(--teal);padding:8px 0;min-height:36px}.full{width:100%}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:24px 0 12px}.section-head h3{font-size:15px;margin:0;font-weight:800}.section-head span{font-size:11px;color:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.step{background:white;border:1px solid var(--line);border-radius:15px;padding:13px 10px}.step b{display:block;font-size:12px;margin:8px 0 4px}.step small{font-size:10px;line-height:1.4;color:var(--muted)}.step i{font-style:normal;font-size:17px}
+.notice{padding:13px 14px;border-radius:14px;background:#fff6e8;border:1px solid #f0dfc4;color:#76501c;font-size:11px;line-height:1.55;display:flex;gap:9px;margin:14px 0}.notice strong{display:block;font-size:12px;margin-bottom:2px}.notice.info{background:var(--soft);border-color:#d3e7e2;color:#245b56}.notice.danger{background:#fff0f0;border-color:#f0d4d4;color:#8f3d3d}
+.panel{background:white;border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 4px 14px rgba(24,50,71,.025)}.panel h3{font-size:14px;margin:0 0 12px}.label{display:block;font-size:12px;font-weight:750;margin:14px 0 7px}.field,textarea,select{width:100%;border:1px solid #d9e1de;border-radius:12px;padding:13px 14px;background:#fbfcfb;color:var(--ink);outline:none;font-size:13px}.field:focus,textarea:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(23,107,103,.1)}textarea{min-height:170px;resize:vertical;line-height:1.55}.hint{font-size:10px;color:var(--muted);line-height:1.5;margin:6px 0}
+.upload{border:1.5px dashed #b9cbc5;border-radius:15px;padding:17px;text-align:center;background:#f9fbfa}.upload strong{display:block;font-size:12px;margin:6px 0}.upload span{font-size:10px;color:var(--muted)}.upload input{max-width:100%;font-size:11px;margin-top:10px}
+.row{display:flex;gap:9px}.row>*{flex:1}.toggleline{display:flex;align-items:center;justify-content:space-between;padding:12px 0;font-size:12px}.toggleline input{accent-color:var(--teal);width:18px;height:18px}
+.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{font-size:11px;border-radius:30px;padding:7px 10px;background:#f1f4f3;color:#596a70}.chip b{color:var(--ink);margin-left:4px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:9px}.mode{border:1px solid var(--line);background:#fff;border-radius:14px;text-align:left;padding:13px;min-height:105px;color:var(--ink)}.mode.selected{border:1.5px solid var(--teal);background:var(--soft);box-shadow:0 0 0 2px rgba(23,107,103,.06)}.mode .sym{font-size:18px}.mode b{display:block;font-size:12px;margin:7px 0 4px}.mode small{font-size:10px;color:var(--muted);line-height:1.4;display:block}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#f7f9f8;border-radius:13px;padding:12px 9px}.stat strong{font-size:21px;display:block}.stat small{font-size:10px;color:var(--muted)}
+.resultbox{white-space:pre-wrap;word-break:break-word;max-height:290px;overflow:auto;background:#f7f9f8;border:1px solid var(--line);border-radius:13px;padding:14px;font-size:12px;line-height:1.65;color:#324750}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);height:calc(72px + env(safe-area-inset-bottom));padding:8px 12px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:8}
+.tab{border:0;background:transparent;color:#8a979a;font-size:10px;font-weight:650;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-radius:12px}.tab .ico{font-size:18px;line-height:1}.tab.active{color:var(--teal);background:#edf5f2}
+.footer-note{text-align:center;color:#9aa5a6;font-size:9px;padding:16px 0 0}
+@media(min-width:700px){body{padding:24px 0}.app{min-height:calc(100vh - 48px);border-radius:28px;overflow:hidden}.top{border-radius:28px 28px 0 0}.bottom{bottom:24px;border-radius:0 0 28px 28px}.app{padding-bottom:110px}}
+@media(max-width:360px){main{padding-left:15px;padding-right:15px}.h1{font-size:24px}.hero{padding:18px}.step{padding:10px 7px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body><div class="app">
+<header class="top"><div class="brand"><div class="brandmark">◈</div><span>PII GUARD</span></div><small>LOCAL PRIVACY TOOL</small></header>
+<main>
+<section class="screen active" id="home">
+<div class="eyebrow">PRIVATE BY DESIGN</div><h1 class="h1">공유하기 전,<br>개인정보를 먼저 가리세요.</h1><p class="sub">문서와 로그 속 민감한 정보를 찾아<br>필요한 형태로 비식별화합니다.</p>
+<div class="hero"><div class="eyebrow">SAFE WORKFLOW</div><h2>원문은 신중하게,<br>결과는 한 번 더 확인.</h2><p>입력부터 결과 확인까지 간단한 세 단계로 진행하세요. 이 시안은 브라우저 안에서만 동작합니다.</p><button class="btn primary" onclick="go('work')">새 작업 시작 <span>→</span></button></div>
+<div class="section-head"><h3>처리 과정</h3><span>3 STEPS</span></div>
+<div class="steps"><div class="step"><i>⌁</i><b>01 탐지</b><small>지원하는 개인정보 유형 찾기</small></div><div class="step"><i>◉</i><b>02 비식별화</b><small>4가지 방식 중 선택</small></div><div class="step"><i>↓</i><b>03 검수·저장</b><small>결과 확인 후 내보내기</small></div></div>
+<div class="notice"><div>!</div><div><strong>자동 탐지는 완벽하지 않습니다.</strong>라벨 없는 이름, 계좌번호, 여권·운전면허번호, 자유 형식 주소 등은 놓칠 수 있습니다. 공유 전 반드시 직접 확인하세요.</div></div>
+<div class="section-head"><h3>지원 탐지 유형</h3><span>9 TYPES</span></div><div class="chips"><span class="chip">주민등록번호</span><span class="chip">카드번호</span><span class="chip">사업자번호</span><span class="chip">휴대폰</span><span class="chip">일반전화</span><span class="chip">이메일</span><span class="chip">IPv4</span><span class="chip">주소</span><span class="chip">라벨형 이름</span></div>
+</section>
+<section class="screen" id="work">
+<div class="eyebrow">NEW WORKSPACE</div><h1 class="h1">비식별화 작업</h1><p class="sub">텍스트를 붙여넣거나 파일을 선택하세요.</p>
+<div class="panel"><h3>① 입력 방식</h3><label class="label" for="source">텍스트 입력</label><textarea id="source" placeholder="개인정보가 포함된 텍스트를 입력하세요. 실제 민감정보 대신 테스트 데이터 사용을 권장합니다."></textarea><div class="row" style="margin-top:9px"><button class="btn secondary" onclick="loadSample()">예시 데이터</button><button class="btn secondary" onclick="clearInput()">비우기</button></div>
+<div class="label">또는 파일 선택</div><div class="upload"><div style="font-size:22px">⇧</div><strong>TXT 또는 CSV 파일</strong><span>브라우저에서 읽어 처리합니다 · 시안 제한 2MB</span><input type="file" id="file" accept=".txt,.csv,text/plain,text/csv"></div><div id="fileName" class="hint">선택된 파일 없음</div>
+<div class="toggleline"><span>CSV 셀 단위로 처리</span><input id="csvMode" type="checkbox"></div></div>
+<div class="panel"><h3>② 처리 방식 선택</h3><div class="modes">
+<button class="mode selected" data-mode="token" onclick="selectMode('token')"><span class="sym">▦</span><b>토큰 치환</b><small>[휴대폰]처럼 유형 이름으로 대체</small></button>
+<button class="mode" data-mode="mask" onclick="selectMode('mask')"><span class="sym">•••</span><b>부분 마스킹</b><small>일부 문자만 남기고 * 처리</small></button>
+<button class="mode" data-mode="hash" onclick="selectMode('hash')"><span class="sym">⌗</span><b>해시 가명화</b><small>동일 값은 동일 토큰으로 치환</small></button>
+<button class="mode" data-mode="redact" onclick="selectMode('redact')"><span class="sym">▰</span><b>완전 가림</b><small>탐지 구간을 블록 문자로 대체</small></button></div>
+<div id="hashField" style="display:none"><label class="label" for="hashKey">해시 비밀 문구</label><input class="field" id="hashKey" type="password" autocomplete="new-password" placeholder="작업 중 사용할 비밀 문구"><p class="hint">프로토타입 메모리에서만 사용합니다. 운영 환경에서는 안전한 키 관리가 필요합니다.</p></div></div>
+<button class="btn primary full" onclick="runScan()">탐지하고 결과 만들기 <span>→</span></button>
+<div class="footer-note">입력값은 이 화면을 벗어나면 유지되지 않습니다.</div>
+</section>
+<section class="screen" id="result">
+<div class="eyebrow">SCAN & RESULT</div><h1 class="h1">처리 결과</h1><p class="sub">탐지 건수와 치환 결과를 확인하세요.</p>
+<div class="panel"><h3>탐지 요약</h3><div class="statgrid"><div class="stat"><strong id="totalCount">0</strong><small>전체 탐지</small></div><div class="stat"><strong id="typeCount">0</strong><small>탐지 유형</small></div><div class="stat"><strong id="modeName">토큰</strong><small>적용 방식</small></div></div><div id="counts" class="chips" style="margin-top:13px"></div></div>
+<div class="notice"><div>!</div><div><strong>결과 검수 필요</strong>정규식 기반 탐지 결과입니다. 탐지되지 않은 개인정보가 남아 있을 수 있으므로 원문과 결과를 비교해 확인하세요.</div></div>
+<div class="panel"><div class="section-head" style="margin:0 0 10px"><h3>비식별화 결과 미리보기</h3><span id="resultMeta">완료</span></div><div id="resultText" class="resultbox">아직 실행된 작업이 없습니다.</div><div class="row" style="margin-top:12px"><button class="btn secondary" onclick="copyResult()">결과 복사</button><button class="btn primary" onclick="downloadResult()">파일 저장</button></div></div>
+<button class="btn secondary full" onclick="go('work')">새 입력으로 다시 작업</button>
+</section>
+<section class="screen" id="guide">
+<div class="eyebrow">GUIDE & SETTINGS</div><h1 class="h1">안전한 사용을 위한 안내</h1><p class="sub">비식별화 결과를 외부에 공유하기 전에 반드시 확인하세요.</p>
+<div class="panel"><h3>이 도구가 찾는 정보</h3><div class="chips"><span class="chip">주민등록번호</span><span class="chip">카드번호</span><span class="chip">사업자번호</span><span class="chip">휴대폰</span><span class="chip">일반전화</span><span class="chip">이메일</span><span class="chip">IPv4</span><span class="chip">일부 주소</span><span class="chip">라벨형 이름</span></div></div>
+<div class="panel"><h3>현재 구현의 한계</h3><ul style="padding-left:18px;margin:0;color:#68777d;font-size:12px;line-height:1.8"><li>정규식 기반이므로 형식이 다르면 놓칠 수 있습니다.</li><li>라벨 없는 이름은 탐지하지 않습니다.</li><li>계좌번호, 여권·운전면허번호, 외국 형식은 미지원입니다.</li><li>주소는 일부 한국 행정구역/도로 패턴만 탐지합니다.</li><li>주민번호는 발급 시기에 따라 체크섬 검증이 불가능할 수 있습니다.</li><li>hash 방식은 비밀 문구 관리가 중요하며, 짧은 값은 추측 위험이 있습니다.</li></ul></div>
+<div class="panel"><h3>개인정보 처리 원칙</h3><p class="hint" style="font-size:12px">이 HTML 시안은 입력값을 원격 서버로 보내지 않으며 브라우저 메모리에서 처리합니다. 브라우저 새로고침/화면 종료 시 작업 내용은 사라집니다. 실제 운영 서비스의 보안 인증이나 법적 적합성을 의미하지 않습니다.</p></div>
+<div class="notice info"><div>i</div><div><strong>운영 적용 전 확인</strong>실제 서비스로 전환하려면 탐지 정확도 검증, 파일 보안, 키 관리, 접근통제, 보존·삭제 정책, 법률 검토가 별도로 필요합니다.</div></div>
+<div class="footer-note">PII GUARD · Concept prototype v1.0</div>
+</section>
+</main>
+<nav class="bottom" aria-label="주요 메뉴">
+<button class="tab active" data-screen="home" onclick="go('home')"><span class="ico">⌂</span>홈</button>
+<button class="tab" data-screen="work" onclick="go('work')"><span class="ico">＋</span>작업</button>
+<button class="tab" data-screen="result" onclick="go('result')"><span class="ico">▤</span>결과</button>
+<button class="tab" data-screen="guide" onclick="go('guide')"><span class="ico">ⓘ</span>안내</button>
+</nav></div>
+<script>
+let mode='token', output='', counts={}, rawInput='', resultType='txt';
+const labels={rrn:'주민등록번호',card:'카드번호',biz:'사업자번호',mobile:'휴대폰',phone:'일반전화',email:'이메일',ip:'IP 주소',address:'주소',name:'이름'};
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'});}
+function selectMode(m){mode=m;document.querySelectorAll('.mode').forEach(x=>x.classList.toggle('selected',x.dataset.mode===m));document.getElementById('hashField').style.display=m==='hash'?'block':'none';}
+function loadSample(){document.getElementById('source').value='가입 이름: 홍길동 연락처 010-1234-5678 이메일 hong@example.com\\n주민등록번호 900101-1234567 카드 4242 4242 4242 4242\\n접속 IP 203.0.113.7 주소 서울특별시 예시구 예시로 12\\n사업자번호 123-45-67891 문의 02-123-4567';}
+function clearInput(){document.getElementById('source').value='';document.getElementById('file').value='';document.getElementById('fileName').textContent='선택된 파일 없음';}
+document.getElementById('file').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;if(f.size>2*1024*1024){alert('시안에서는 2MB 이하 파일만 선택할 수 있습니다.');e.target.value='';return;}if(!/\.(txt|csv)$/i.test(f.name)){alert('TXT 또는 CSV 파일만 지원합니다.');e.target.value='';return;}document.getElementById('source').value=await f.text();document.getElementById('fileName').textContent=f.name+' · '+Math.ceil(f.size/1024)+'KB';document.getElementById('csvMode').checked=/\.csv$/i.test(f.name);});
+function luhn(s){let a=s.replace(/\D/g,'').split('').reverse().map(Number),sum=0;for(let i=0;i<a.length;i++){let n=a[i];if(i%2){n*=2;if(n>9)n-=9;}sum+=n;}return a.length>=13&&sum%10===0;}
+function validIP(s){let a=s.split('.');return a.length===4&&a.every(n=>/^\d+$/.test(n)&&+n>=0&&+n<=255);}
+function findHits(text){
+ const rules=[
+ ['rrn',/(?<!\d)(\d{2})(\d{2})(\d{2})-?([1-8])(\d{6})(?!\d)/g],
+ ['card',/(?<!\d)(?:\d{4}[- ]?){3}\d{4}(?!\d)/g],
+ ['biz',/(?<!\d)\d{3}-\d{2}-\d{5}(?!\d)/g],
+ ['mobile',/(?<!\d)01[016789][-. ]?\d{3,4}[-. ]?\d{4}(?!\d)/g],
+ ['phone',/(?<!\d)0(?:2|[3-6]\d)[-. ]?\d{3,4}[-. ]?\d{4}(?!\d)/g],
+ ['email',/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/g],
+ ['ip',/(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])/g],
+ ['address',/(?:서울특별시|서울시|부산광역시|대구광역시|인천광역시|광주광역시|대전광역시|울산광역시|세종특별자치시|경기도|강원도|충청[남북]도|전라[남북]도|경상[남북]도|제주특별자치도)\s*[가-힣]+[시군구]?\s*[가-힣0-9]*[로길동읍면]\s*\d*(?:-\d+)?(?:번지)?/g],
+ ['name',/(?<=(?:이름|성명|name)[:\s])\s*[가-힣]{2,4}|(?<=(?:이름|성명|name)[:\s])\s*[A-Za-z][A-Za-z .]{1,30}/gi]
+ ];
+ let hits=[];for(const [kind,rx] of rules){for(const m of text.matchAll(rx)){let v=m[0],ok=true;if(kind==='card')ok=luhn(v);if(kind==='ip')ok=validIP(v);if(kind==='rrn'){let g=v.replace(/\D/g,'')[6],mm=+v.replace(/\D/g,'').slice(2,4),dd=+v.replace(/\D/g,'').slice(4,6);ok=mm>=1&&mm<=12&&dd>=1&&dd<=31&&'12345678'.includes(g);}if(kind==='biz')ok=true;if(ok)hits.push({start:m.index,end:m.index+v.length,kind,value:v});}}
+ hits.sort((a,b)=>a.start-b.start||b.end-a.end);let out=[];for(const h of hits){if(out.length&&h.start<out[out.length-1].end)continue;out.push(h);}return out;
+}
+function maskValue(kind,v){if(kind==='email'){let [u,d]=v.split('@');return u.slice(0,1)+'*'.repeat(Math.max(u.length-1,1))+'@'+d;}if(kind==='name')return v.slice(0,1)+'*'.repeat(Math.max(1,v.length-1));if(kind==='ip')return v.split('.').slice(0,2).join('.')+'.*.*';if(kind==='address')return v.split(/\s+/)[0]+' ***';let digits=[...v].map((c,i)=>/\d/.test(c)?i:-1).filter(i=>i>=0),keep=[];if(kind==='rrn')keep=digits.slice(0,6);else if(kind==='mobile'||kind==='phone')keep=[...digits.slice(0,3),...digits.slice(-4)];else if(kind==='card')keep=digits.slice(-4);else keep=digits.slice(-2);return [...v].map((c,i)=>/\d/.test(c)&&!keep.includes(i)?'*':c).join('');}
+async function runScan(){let text=document.getElementById('source').value;if(!text.trim()){alert('먼저 텍스트를 입력하거나 파일을 선택하세요.');return;}if(mode==='hash'&&!document.getElementById('hashKey').value){alert('해시 비밀 문구를 입력하세요.');return;}rawInput=text;let hits=findHits(text);counts={};for(const h of hits)counts[h.kind]=(counts[h.kind]||0)+1;let key=document.getElementById('hashKey').value;let parts=[],pos=0;for(const h of hits){parts.push(text.slice(pos,h.start));let repl='';if(mode==='token')repl='['+labels[h.kind]+']';else if(mode==='redact')repl='████';else if(mode==='mask')repl=maskValue(h.kind,h.value);else{let bytes=new TextEncoder().encode(key+'|'+h.value.toLowerCase().replace(/[\s.-]/g,''));let digest=await crypto.subtle.digest('SHA-256',bytes);repl='['+labels[h.kind]+':'+[...new Uint8Array(digest)].slice(0,4).map(x=>x.toString(16).padStart(2,'0')).join('')+']';}parts.push(repl);pos=h.end;}parts.push(text.slice(pos));output=parts.join('');document.getElementById('totalCount').textContent=hits.length;document.getElementById('typeCount').textContent=Object.keys(counts).length;document.getElementById('modeName').textContent={token:'토큰',mask:'마스킹',hash:'해시',redact:'가림'}[mode];document.getElementById('counts').innerHTML=Object.entries(counts).map(([k,v])=>'<span class="chip">'+labels[k]+' <b>'+v+'</b></span>').join('')||'<span class="hint">탐지된 항목이 없습니다.</span>';document.getElementById('resultText').textContent=output;document.getElementById('resultMeta').textContent=hits.length+'건 처리';go('result');}
+async function copyResult(){if(!output){alert('먼저 작업을 실행하세요.');return;}try{await navigator.clipboard.writeText(output);alert('결과를 복사했습니다.');}catch(e){alert('브라우저에서 복사를 허용하지 않습니다. 결과를 직접 선택해 복사하세요.');}}
+function downloadResult(){if(!output){alert('먼저 작업을 실행하세요.');return;}let csv=document.getElementById('csvMode').checked;let blob=new Blob([output],{type:csv?'text/csv;charset=utf-8':'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=csv?'anonymized_result.csv':'anonymized_result.txt';a.click();URL.revokeObjectURL(a.href);}
+</script></body></html>
